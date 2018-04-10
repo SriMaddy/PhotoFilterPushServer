@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("/notification")
 public class NotificationController {
 
-	private static final String ANDROID_SERVER_KEY = "AIzaSyBlkUD_Q7nzuohr2D4SKo9eJAcUoXdOCMk";
-	
-	@Autowired
-	private TokenRepo tokenRepo;
-	
-	@Autowired
-	private NotificationRepo notificationRepo;
-	
+	private static final String ANDROID_SERVER_KEY = "AIzaSyDmRAY_cW-qjNXmA-r28k0pTLdeXZnovpc";
 	private static final String URL = "https://fcm.googleapis.com/fcm/send";
 	
 	@RequestMapping(value = "/registerToken", method = org.springframework.web.bind.annotation.RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,25 +31,13 @@ public class NotificationController {
 		Gson gson = new Gson();
 		TokenBean token = gson.fromJson(payload, TokenBean.class);
 		
-		Iterable<TokenBean> tokenBeans = tokenRepo.findAll();
-		System.out.println("TokenBeans" + ((tokenBeans != null) ? tokenBeans : "Null"));
-		if(tokenBeans == null || !tokenBeans.iterator().hasNext()) {
-			System.out.println("No Token-> Add new Record");
-			token = tokenRepo.save(token);
-			return new ResponseEntity<>(token, HttpStatus.CREATED);
-		}
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference("monitor").child("token").push();
+		String key = ref.getKey();
+		token.setId(key);
+		ref.setValueAsync(token);
 		
-		for(TokenBean bean : tokenBeans) {
-			if(bean.getDeviceId().equals(token.getDeviceId())) {
-				tokenRepo.deleteById(bean.getId());
-				token = tokenRepo.save(token);
-				return new ResponseEntity<>(token, HttpStatus.CREATED);
-			} else {
-				token = tokenRepo.save(token);
-				return new ResponseEntity<>(token, HttpStatus.CREATED);
-			}
-		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return null;
 	}
 	
 	@RequestMapping(value = "/sendNotification", method = org.springframework.web.bind.annotation.RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -105,7 +87,7 @@ public class NotificationController {
 			in.close();
 			con.disconnect();
 			
-			notification = notificationRepo.save(notification);
+//			notification = notificationRepo.save(notification);
 
 			System.out.println("Response : " + response.toString());
 		} catch (IOException e) {

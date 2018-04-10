@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "972777858982",
+    "firebase_url": "https://photofilter-5a456.firebaseio.com",
+    "project_id": "photofilter-5a456",
+    "storage_bucket": "photofilter-5a456.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972777858982:android:7e20afd2d09884f3",
+        "android_client_info": {
+          "package_name": "photocam.com.monitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972777858982-9dv9i6k02ecoslaoebj69nmp7ce41csd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlvpnpwth80ifFzmD5tmmoH6W1VaoAfPQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972777858982:android:5edf19618676c8e5",
+        "android_client_info": {
+          "package_name": "photocam.com.photofilter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972777858982-9dv9i6k02ecoslaoebj69nmp7ce41csd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlvpnpwth80ifFzmD5tmmoH6W1VaoAfPQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

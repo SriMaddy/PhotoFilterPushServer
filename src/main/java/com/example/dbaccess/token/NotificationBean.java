@@ -1,34 +1,10 @@
 package com.example.dbaccess.token;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import com.google.gson.annotations.Expose;
-
-@Entity
-@Table(name = "notification_table")
 public class NotificationBean {
 
-//	@Expose
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private long id;
-	
-	@Expose
-	@Column(name = "title", nullable = false)
+	private long id;	
 	private String title;
-	
-	@Expose
-	@Column(name = "message", nullable = false)
 	private String message;
-	
-//	@Expose
-	@Column(name = "timestamp", nullable = false)
 	private long timestamp;
 	
 	public long getId() {
