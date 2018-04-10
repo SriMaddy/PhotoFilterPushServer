@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -32,11 +35,55 @@ public class NotificationController {
 		TokenBean token = gson.fromJson(payload, TokenBean.class);
 		
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference ref = database.getReference("monitor").child("token").push();
-		String key = ref.getKey();
-		token.setId(key);
-		ref.setValueAsync(token);
+		DatabaseReference ref = database.getReference("monitor").child("token");
+		final ChildEventListener listener = new ChildEventListener() {
+			
+			@Override
+			public void onChildRemoved(DataSnapshot arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onChildMoved(DataSnapshot arg0, String arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onChildChanged(DataSnapshot arg0, String arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onChildAdded(DataSnapshot arg0, String arg1) {
+				// TODO Auto-generated method stub
+				TokenBean tokenSnapShot = arg0.getValue(TokenBean.class);
+				if(token.getDeviceId().equals(tokenSnapShot.getDeviceId())) {
+					if(!token.getToken().equals(tokenSnapShot.getToken())) {
+						DatabaseReference ref1 = database.getReference("monitor").child("token").push();
+						String key = ref1.getKey();
+						token.setId(key);
+						ref1.setValueAsync(token);
+					}
+				} else {
+					DatabaseReference ref1 = database.getReference("monitor").child("token").push();
+					String key = ref1.getKey();
+					token.setId(key);
+					ref1.setValueAsync(token);
+				}
+			}
+			
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 		
+		ref.addChildEventListener(listener);
+		ref.removeEventListener(listener);
 		return null;
 	}
 	
